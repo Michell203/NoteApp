@@ -9,8 +9,7 @@ package com.mycompany.noteappjava;
  * @author Admin
  */
 public class NoteAppJava {
-
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    public static void main(String[] args){
+        NotePad pad = new NotePad();
     }
 }

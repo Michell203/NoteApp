@@ -12,17 +12,12 @@ import javax.swing.text.*;
  */
 
 public class NotePad extends JFrame implements ActionListener{
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
     JTextArea textArea;
     JFrame frame;
     
     NotePad(){
-        frame = new JFrame("editor");
+        frame = new JFrame("editor"); //new frame
         
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -31,10 +26,11 @@ public class NotePad extends JFrame implements ActionListener{
         catch (Exception e) {
         }
         
-        textArea = new JTextArea();
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menuFile = new JMenu("File");
+        textArea = new JTextArea(); //text component
+        JMenuBar menuBar = new JMenuBar(); //menu bar
+        JMenu menuFile = new JMenu("File"); //menu for menu
         
+        //menu items
         JMenuItem itemNew = new JMenuItem("New");
         JMenuItem itemOpen = new JMenuItem("Open");
         JMenuItem itemSave = new JMenuItem("Save");
@@ -63,7 +59,107 @@ public class NotePad extends JFrame implements ActionListener{
         JMenuItem menuClose = new JMenuItem("Close");
         menuClose.addActionListener(this);
         
-        menuBar.add()
+        menuBar.add(menuFile);
+        menuBar.add(menuEdit);
+        menuBar.add(menuClose);
+        
+        frame.setJMenuBar(menuBar);
+        frame.add(textArea);
+        frame.setSize(500,500);
+        frame.show();
     }
+    
+    public void actionPerformed(ActionEvent event){
+        
+        String command = event.getActionCommand();
+        
+        if(command.equals("Cut")){
+            textArea.cut();
+        } else if(command.equals("Cut")){
+            textArea.copy();
+            
+        } else if(command.equals("Cut")){
+            textArea.paste();
+            
+        } else if(command.equals("Save")){
+            JFileChooser j = new JFileChooser("f:");
+            
+            int r = j.showSaveDialog(null);
+            if(r == JFileChooser.APPROVE_OPTION){
+                File file = new File(j.getSelectedFile().getAbsolutePath());
+                
+                try {
+                    // Create a file writer
+                    FileWriter wr = new FileWriter(file, false);
+ 
+                    // Create buffered writer to write
+                    BufferedWriter w = new BufferedWriter(wr);
+ 
+                    // Write
+                    w.write(textArea.getText());
+ 
+                    w.flush();
+                    w.close();
+                }
+                catch (Exception evt) {
+                    JOptionPane.showMessageDialog(frame, evt.getMessage());
+                }
+            } else { //if operation cancelled 
+                JOptionPane.showMessageDialog(frame, "Operation cancelled");
+            }
+        } else if(command.equals("Print")){
+            try {
+                // print the file
+                textArea.print();
+            }
+            catch (Exception evt) {
+                JOptionPane.showMessageDialog(frame, evt.getMessage());
+            }
+        } else if(command.equals("Open")){
+            JFileChooser j = new JFileChooser("f:");
+            
+            int r = j.showOpenDialog(null);
+            
+            if(r == JFileChooser.APPROVE_OPTION){
+                File file = new File(j.getSelectedFile().getAbsolutePath());
+                
+                try {
+                    // String
+                    String s1 = "", sl = "";
+ 
+                    // File reader
+                    FileReader fr = new FileReader(file);
+ 
+                    // Buffered reader
+                    BufferedReader br = new BufferedReader(fr);
+ 
+                    // Initialize sl
+                    sl = br.readLine();
+ 
+                    // Take the input from the file
+                    while ((s1 = br.readLine()) != null) {
+                        sl = sl + "\n" + s1;
+                    }
+ 
+                    // Set the text
+                    textArea.setText(sl);
+                }
+                catch (Exception evt) {
+                    JOptionPane.showMessageDialog(frame, evt.getMessage());
+                }
+            } else {
+            JOptionPane.showMessageDialog(frame,"Operation cancelled");
+            
+            }
+        } else if(command.equals("New")){
+            textArea.setText("");
+        } else if (command.equals("Close")){
+            frame.setVisible(false);
+        }
+    }
+    
+//    public static void main(String[] args){
+//        NotePad pad = new NotePad();
+//    }
     
 }
