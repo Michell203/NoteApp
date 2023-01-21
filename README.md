@@ -1,2 +1,2 @@
 # NoteApp
-Simple note taking app built with Java
+Simple note taking app built with Java Swing
